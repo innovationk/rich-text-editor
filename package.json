@@ -1,4 +1,5 @@
 {
+  "scope": "devguild",
   "name": "rich-text-editor",
   "version": "1.0.0",
   "description": "rich text editor  with customizable actions",

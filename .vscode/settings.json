@@ -1,0 +1,8 @@
+{
+  "editor.detectIndentation": true,
+  "editor.autoClosingBrackets": "always",
+  "editor.formatOnSave": true,
+  "editor.formatOnSaveMode": "modificationsIfAvailable",
+  "editor.bracketPairColorization.enabled": true,
+  "editor.rulers": [110]
+}

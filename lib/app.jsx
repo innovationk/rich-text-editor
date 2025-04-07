@@ -1,3 +1,9 @@
+import InputRichText from "../drafts/InputRichText";
+
 export default function App() {
-  return <div>app to test the package</div>;
+  return (
+    <div style={{ width: "100%", height: "100%" }}>
+      <InputRichText label="test label" initValue="toto" />
+    </div>
+  );
 }

@@ -1,11 +1,11 @@
-import useToggleStyle from "./useToggleStyle";
-import TextStyle from "./TextStyle";
+import useEnrichment from "./useEnrichment";
+import TextDecorator from "./TextDecorator";
 
 export default function Underline() {
-  const toggleStyle = useToggleStyle();
+  const enrich = useEnrichment();
 
   return (
-    <TextStyle cb={() => toggleStyle("textDecoration", "underline")}>
+    <TextDecorator cb={() => enrich("textDecoration", "underline")}>
       <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
           d="M4 21H20M18 4V11C18 14.3137 15.3137 17 12 17C8.68629 17 6 14.3137 6 11V4M4 3H8M16 3H20"
@@ -15,6 +15,6 @@ export default function Underline() {
           strokeLinejoin="round"
         />
       </svg>
-    </TextStyle>
+    </TextDecorator>
   );
 }

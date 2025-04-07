@@ -1,5 +1,5 @@
-import useToggleStyle from "./useToggleStyle";
-import TextStyle from "./TextStyle";
+import useEnrichment from "./useEnrichment";
+import TextDecorator from "./TextDecorator";
 
 const ALIGNMENT_TYPE = ["left", "center", "right", "justify"];
 const ALIGNMENT_IMG = {
@@ -142,14 +142,14 @@ const ALIGNMENT_IMG = {
 };
 
 export default function Alignments() {
-  const toggleStyle = useToggleStyle();
+  const enrich = useEnrichment();
 
   return ALIGNMENT_TYPE.map((alignment) => (
-    <TextStyle
+    <TextDecorator
       key={alignment}
-      cb={() => toggleStyle("textAlign", alignment, true)}
+      cb={() => enrich("textAlign", alignment, true)}
     >
       {ALIGNMENT_IMG[alignment]}
-    </TextStyle>
+    </TextDecorator>
   ));
 }

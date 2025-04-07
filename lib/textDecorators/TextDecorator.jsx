@@ -1,6 +1,6 @@
 import { Children } from "react";
 
-export default function TextStyle({ cb, children }) {
+export default function TextDecorator({ cb, children }) {
   function handleClick(e) {
     e.preventDefault();
     cb();

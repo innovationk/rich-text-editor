@@ -1,9 +1,9 @@
 import { useState } from "react";
-import useToggleStyle from "./useToggleStyle";
-import TextStyle from "./TextStyle";
+import useEnrichment from "./useEnrichment";
+import TextDecorator from "./TextDecorator";
 
 export default function Color() {
-  const toggleStyle = useToggleStyle();
+  const enrich = useEnrichment();
   const [color, setColor] = useState("#000000");
 
   return (
@@ -17,7 +17,7 @@ export default function Color() {
         }}
         className={"inputRichInput"}
       />
-      <TextStyle cb={() => toggleStyle("color", color)}>
+      <TextDecorator cb={() => enrich("color", color)}>
         <svg
           viewBox="0 -2 32 32"
           version="1.1"
@@ -29,7 +29,7 @@ export default function Color() {
             </g>
           </g>
         </svg>
-      </TextStyle>
+      </TextDecorator>
     </>
   );
 }

@@ -124,6 +124,8 @@ const RichText = forwardRef(function RichText(
           padding: "10px",
           minHeight: "200px",
           overflowY: "auto",
+          width: "100%",
+          boxSizing: "border-box",
         }}
       />
     </>

@@ -1,9 +1,17 @@
-import InputRichText from "../drafts/InputRichText";
+import RichText from "./richTextEditor/RichText";
 
 export default function App() {
   return (
-    <div style={{ width: "100%", height: "100%" }}>
-      <InputRichText label="test label" initValue="toto" />
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        padding: "20px",
+        boxSizing: "border-box",
+        border: "1px dotted blue",
+      }}
+    >
+      <RichText label="test label" initValue="toto" />
     </div>
   );
 }

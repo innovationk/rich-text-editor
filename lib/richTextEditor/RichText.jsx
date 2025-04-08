@@ -1,25 +1,27 @@
 import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
-import Underline from "../lib/textDecorators/Underline";
-import Bold from "../lib/textDecorators/Bold";
-import Italic from "../lib/textDecorators/Italic";
-import Color from "../lib/textDecorators/Color";
-import Alignments from "../lib/textDecorators/Alignments";
-import UpperCase from "../lib/textDecorators/UpperCase";
-import LowerCase from "../lib/textDecorators/LowerCase";
-import OrderedList from "../lib/textDecorators/OrderedList";
-import UnorderedList from "../lib/textDecorators/UnorderedList";
+import Underline from "../textDecorators/Underline";
+import Bold from "../textDecorators/Bold";
+import Italic from "../textDecorators/Italic";
+import Color from "../textDecorators/Color";
+import Alignments from "../textDecorators/Alignments";
+import UpperCase from "../textDecorators/UpperCase";
+import LowerCase from "../textDecorators/LowerCase";
+import OrderedList from "../textDecorators/OrderedList";
+import UnorderedList from "../textDecorators/UnorderedList";
+import { RichTextRow } from "./RichTextRow";
+import { RichTextBlock } from "./RichTextBlock";
 
 const CSS = `
-.inputRichMenu {
+.richTextMenu {
     border: 1px solid #ccc;
     background-color: whitesmoke;
 }
-.inputRichRow {
+.richTextRow {
     box-sizing: border-box;
     display: table;
     width: 100%;
 }
-.inputRichDiv {
+.richTextDiv {
     display: table-cell;
     vertical-align: middle;
 }
@@ -27,13 +29,13 @@ const CSS = `
     border: none;
     background-color: transparent;
 }
-.inputRichTextButton {
+.richTextButton {
     background-color: transparent;
     color: black;
     border: none;
     text-algin: enter;
 }
-.inputRichTextButton svg {
+.richTextButton svg {
     height: 25px;
     width: 25px;
 }
@@ -46,7 +48,7 @@ const CSS = `
 }
 `;
 
-const InputRichText = forwardRef(function InputRichText(
+const RichText = forwardRef(function RichText(
   {
     label = "",
     name = "",
@@ -91,27 +93,27 @@ const InputRichText = forwardRef(function InputRichText(
         )}
       </label>
 
-      <div className="inputRichMenu">
-        <div className="inputRichRow">
-          <div className="inputRichDiv" style={{ textAlign: "left" }}>
+      <div className="richTextMenu">
+        <RichTextRow>
+          <RichTextBlock position="left">
             <Bold />
             <Italic />
             <Underline />
             <Color />
-          </div>
+          </RichTextBlock>
 
-          <div className="inputRichDiv" style={{ textAlign: "center" }}>
+          <RichTextBlock position="center">
             <Alignments />
-          </div>
+          </RichTextBlock>
 
-          <div className="inputRichDiv" style={{ textAlign: "right" }}>
+          <RichTextBlock position="right">
             <OrderedList />
             <UnorderedList />
 
             <UpperCase />
             <LowerCase />
-          </div>
-        </div>
+          </RichTextBlock>
+        </RichTextRow>
       </div>
 
       <div
@@ -127,4 +129,4 @@ const InputRichText = forwardRef(function InputRichText(
     </>
   );
 });
-export default InputRichText;
+export default RichText;

@@ -2,8 +2,8 @@ import { Children } from "react";
 
 /**
  * 
- * @param {TextDecoratorProps} TextDecoratorProps - {@link TextDecoratorProps}
- * @returns JSX Element
+ * @type {TextDecoratorProps}
+ * @returns React.JSX.Element
  */
 export default function TextDecorator({ cb, children }) {
   function handleClick(e) {
@@ -11,14 +11,15 @@ export default function TextDecorator({ cb, children }) {
     cb();
   }
   return (
-    <button onClick={handleClick} className="inputRichTextButton">
+    <button onClick={handleClick} className="richTextButton">
       {Children.map(children, (child) => child)}
     </button>
   );
 }
 
 /**
- * @typedef {Object} TextDecoratorProps
- * @property {function} cb - The callback to be called on click event
- * @property {Array} children - Array of ReactNode to display inside the button
+ * @typedef TextDecoratorProps
+ * @type {object}
+ * @property {() => void} cb - The callback to be called on click event
+ * @property {React.ReactNode[]} children - Array of ReactNode to display inside the button
  */

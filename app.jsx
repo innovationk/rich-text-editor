@@ -1,4 +1,4 @@
-import RichText from "./richTextEditor/RichText";
+import { RichText } from ".";
 
 export default function App() {
   return (

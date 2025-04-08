@@ -1,6 +1,6 @@
 {
-  "scope": "devguild",
-  "name": "rich-text-editor",
+  "scope": "@devguild",
+  "name": "@devguild/rich-text-editor",
   "version": "1.0.0",
   "description": "rich text editor  with customizable actions",
   "type": "module",
@@ -10,6 +10,23 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bundledDependencies": [
+    "react",
+    "react-dom"
+  ],
+  "dependencies": {
+    "@eslint/js": "^9.23.0",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "eslint": "^9.23.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.19",
+    "globals": "^16.0.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "vite": "^6.2.5"
   },
   "repository": {
     "type": "git",
@@ -37,21 +54,7 @@
     "url": "https://github.com/innovationk/rich-text-editor/issues"
   },
   "homepage": "https://github.com/innovationk/rich-text-editor#readme",
-  "peerDependencies": {
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0"
-  },
-  "devDependencies": {
-    "@eslint/js": "^9.23.0",
-    "@types/react": "^19.1.0",
-    "@types/react-dom": "^19.1.1",
-    "@vitejs/plugin-react": "^4.3.4",
-    "eslint": "^9.23.0",
-    "eslint-plugin-react-hooks": "^5.2.0",
-    "eslint-plugin-react-refresh": "^0.4.19",
-    "globals": "^16.0.0",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "vite": "^6.2.5"
+  "engines": {
+    "node": "^20.18"
   }
 }

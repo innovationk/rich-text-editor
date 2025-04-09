@@ -29,6 +29,7 @@ npm run dev
 
 ```
 cd project-ts
+# if doubt: rm -rf ./node_modules/@devguild
 npm link @devguild/rich-text-editor
 
 npm run dev

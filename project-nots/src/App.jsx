@@ -1,5 +1,5 @@
 // import { useState } from 'react'
-import RichTextEditor from '@devguild/rich-text-editor';
+import { RichTextEditor, RichTextVisualiser } from '@devguild/rich-text-editor';
 
 function App() {
 
@@ -9,8 +9,14 @@ function App() {
                 Rich Text
             </h1>
 
+            <h2>Editor</h2>
             <div>
                 <RichTextEditor />
+            </div>
+
+            <h2>Visualiser</h2>
+            <div>
+                <RichTextVisualiser />
             </div>
         </div>
     )

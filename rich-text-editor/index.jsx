@@ -1,7 +1,4 @@
-import React from 'react';
+import RichTextEditor from "./RichTextEditor";
+import RichTextVisualiser from "./RichTextVisualiser";
 
-const RichTextEditor = () => {
-    return <div>RichTextEditor</div>;
-};
-
-export default RichTextEditor;
+export { RichTextEditor, RichTextVisualiser };

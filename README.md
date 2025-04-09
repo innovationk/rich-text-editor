@@ -9,6 +9,15 @@ cd rich-text-editor
 npm link # rf: https://docs.npmjs.com/cli/v9/commands/npm-link
 ```
 
+### Update documentation
+
+```
+npm install -g jsdoc # install
+
+cd rich-text-editor
+jsdoc -c jsdoc.json # generate
+```
+
 ### Create a symlink in the project that will use the futur component
 
 ```

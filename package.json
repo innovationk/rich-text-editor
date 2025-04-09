@@ -5,13 +5,21 @@
   "description": "rich text editor  with customizable actions",
   "type": "module",
   "main": "index.js",
+  "module": "./dist/index.umd.cjs",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.umd.cjs"
+    },
+    "./style.css": "./dist/index.css"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "bundledDependencies": [
+  "bundleDependencies": [
     "react",
     "react-dom"
   ],
@@ -55,6 +63,6 @@
   },
   "homepage": "https://github.com/innovationk/rich-text-editor#readme",
   "engines": {
-    "node": "^20.18"
+    "node": ">=18.20 <=22.14.0"
   }
 }

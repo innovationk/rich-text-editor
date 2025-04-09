@@ -14,4 +14,5 @@ npm link # rf: https://docs.npmjs.com/cli/v9/commands/npm-link
 ```
 cd project-nots
 npm link @devguild/rich-text-editor
+npm run dev
 ```

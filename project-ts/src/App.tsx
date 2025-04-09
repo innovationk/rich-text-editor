@@ -11,7 +11,7 @@ function App() {
 
             <h2>Editor</h2>
             <div>
-                <RichTextEditor />
+                <RichTextEditor initValue="My init value" />
             </div>
 
             <h2>Visualiser</h2>

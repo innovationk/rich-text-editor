@@ -1,5 +1,6 @@
 // import { useState } from 'react'
-import { RichText } from '@devguild/rich-text-editor';
+// import { RichText } from '@devguild/rich-text-editor';
+import RichText from './tempo/RichText';
 
 function App() {
 

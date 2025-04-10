@@ -52,6 +52,7 @@ function RichText() {
                     endNode.innerHTML = parentInnerHTML.substring(range.endOffset);
                     similarParentNode.parentNode.insertBefore(endNode, similarParentNode);
 
+                    // TODO: check if / find a better tag than span 
                     let middleNode = document.createElement("span");
                     middleNode.innerHTML = parentInnerHTML.substring(range.startOffset, range.endOffset);
                     similarParentNode.parentNode.insertBefore(middleNode, endNode);

@@ -2,10 +2,9 @@ import { Children } from "react";
 
 /**
  *
- * @type {RichTextBlockProps} RichTextBlockProps - {@link RichTextBlockProps}
- * @returns React.JSX.Element
+ * @type {RichTextBlockProps}
  */
-export function RichTextBlock({ children, position }) {
+export function RichTextBlock({  position, children }) {
   return (
     <div className="richTextDiv" style={{ textAlign: position }}>
       {Children.map(children, (child) => child)}
@@ -14,7 +13,11 @@ export function RichTextBlock({ children, position }) {
 }
 
 /**
- * @typedef {Object} RichTextBlockProps
- * @property {Array} children - Array of React.ReactNode
- * @property {("left" | "center" | "right")} position - The position of the block in the RichTextRow
+ * @callback RichTextBlockProps
+ * 
+ * @param {object} props
+ * @param {("left" | "center" | "right")} props.position
+ * @param {React.JSX.Element[]} [children]
+ * @returns {React.JSX.Element}
+ * 
  */

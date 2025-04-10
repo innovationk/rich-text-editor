@@ -48,7 +48,11 @@ const CSS = `
 }
 `;
 
-const RichText = forwardRef(function RichText(
+/**
+ * @type {RichTextComponentProps}
+ * @returns React.JSX.Element
+ */
+function RichTextComponent(
   {
     label = "",
     name = "",
@@ -130,5 +134,19 @@ const RichText = forwardRef(function RichText(
       />
     </>
   );
-});
+}
+
+/**
+ * @callback RichTextComponentProps
+ * @param {Object} props
+ * @param {string} [props.label=""]
+ * @param {string} [props.name=""]
+ * @param {string} [props.labelClasses = "ikBlock"]
+ * @param {boolean} [props.required = false]
+ * @param {React.Ref} ref
+ *
+ * @returns {React.JSX.Element}
+ */
+
+const RichText = forwardRef(RichTextComponent);
 export default RichText;

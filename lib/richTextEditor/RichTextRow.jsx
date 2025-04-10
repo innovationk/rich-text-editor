@@ -2,8 +2,8 @@ import { Children } from "react";
 
 /**
  *
- * @param {RichTextRowProps} RichTextRowProps - {@link RichTextRowProps}
- * @returns React.JSX.Element
+ * @type {RichTextRowProps}
+ * 
  */
 export function RichTextRow({ children }) {
   return (
@@ -14,6 +14,9 @@ export function RichTextRow({ children }) {
 }
 
 /**
- * @typedef {Object} RichTextRowProps
- * @param {Array} children - Array of React.ReactNode
+ * @callback RichTextRowProps
+ * @param {object} props
+ * @param {React.JSX.Element[]} [props.children] - Array of JSX.Element
+ * @returns {React.JSX.Element}
+ * 
  */

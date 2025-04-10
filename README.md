@@ -1,9 +1,28 @@
 # rich-text-editor
-Rich text editor
 
-## Testing the package locally
+## How to dev in local
 
-- Clone this repository to your machine
-- At the root level run `npm link`
-- Move into your testing app folder (e.g. `cd path/to/my/testing/app`)
-- At the root level run `npm link @devguild/rich-text-editor`
+### Create a symlink
+
+```
+cd rich-text-editor
+npm link # rf: https://docs.npmjs.com/cli/v9/commands/npm-link
+```
+
+### Symlink with a project
+
+```
+cd project-nots
+# if doubt: rm -rf ./node_modules/@devguild
+npm link @devguild/rich-text-editor
+
+npm run dev
+```
+
+```
+cd project-ts
+# if doubt: rm -rf ./node_modules/@devguild
+npm link @devguild/rich-text-editor
+
+npm run dev
+```

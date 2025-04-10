@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "target": "ESNext",
+    "module": "ESNext",
+    "lib": ["ESNext"],
+    "strict": true,
+    "sourceMap": true,
+    "inlineSources": true,
+    "declaration": true,
+    "jsx": "react-jsx",
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "declarationDir": "dist/types",
+    "typeRoots": ["node_modules/@types"],
+    "emitDeclarationOnly": true,
+    "rootDir": "lib"
+  },
+  "exclude": ["dist"],
+  "include": ["lib"]
+}

@@ -82,6 +82,12 @@ function RichTextComponent(
     return editorRef.current.innerHTML;
   };
 
+
+  function handleChange(e) {
+    e.preventDefault();
+    console.log(e.key);
+  }
+
   return (
     <>
       <style>{CSS}</style>
@@ -123,6 +129,7 @@ function RichTextComponent(
       <div
         ref={editorRef}
         contentEditable
+        onKeyUp={handleChange}
         style={{
           border: "1px solid #ccc",
           padding: "10px",

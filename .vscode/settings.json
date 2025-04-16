@@ -10,5 +10,13 @@
   "html.suggest.html5": true,
   "html.autoClosingTags": true,
   "html.format.enable": true,
-  "html.format.preserveNewLines": true
+  "html.format.preserveNewLines": true,
+
+  "javascript.format.enable": true,
+  "javascript.format.semicolons": "insert",
+  "javascript.autoClosingTags": true,
+  "javascript.preferences.importModuleSpecifier": "relative",
+  "javascript.preferences.organizeImports": { "caseFirst": "lower" },
+  "javascript.suggest.autoImports": true,
+  "javascript.suggest.completeJSDocs": true
 }

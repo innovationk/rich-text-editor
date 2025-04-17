@@ -62,3 +62,66 @@ function getClosestNodeFromSelection(range) {
 
   return closestContainer;
 }
+
+/**
+ * 
+ * @param {Node} target 
+ * 
+ * @returns  - Throw an UnmergeableError if something wrong happens.
+ */
+export function mergeWithSurroundings(target) {
+  const {previous, next} = areSurroundingsMergeable(target)
+
+  target.textContent = `${previous.isMergeable ? previous.value: ""}${target.textContent}${next.isMergeable ? next.value: ""}`
+
+  if(previous.isMergeable){
+
+    target.parentNode.removeChild(previous.node)
+  }
+  if(next.isMergeable){
+
+    target.parentNode.removeChild(next.node)
+  }
+  if(previous.isMergeable && next.isMergeable){
+
+    mergeWithSurroundings(target)
+  }
+}
+
+/**
+ * 
+ * @param {Node} currentNode 
+ *
+ * @returns {{previous: {node: Node, value: string, isMergeable: boolean}, next: {node: Node, value: string, isMergeable: boolean}}} 
+ */
+ function areSurroundingsMergeable(currentNode) {
+  const previousSibling = currentNode.previousSibling;
+  const nextSibling  = currentNode.nextSibling;
+
+  console.log({previousSibling, nextSibling})
+
+  return {
+     previous: {
+      node: previousSibling, 
+      value: previousSibling.nodeType === Node.TEXT_NODE ? previousSibling.nodeValue : previousSibling.textContent,
+      isMergeable:  isMergeable(previousSibling, currentNode)
+    },
+    next: {
+      node: nextSibling,
+      value: nextSibling.nodeType === Node.TEXT_NODE ? nextSibling.nodeValue : nextSibling.textContent,
+      isMergeable: isMergeable(nextSibling, currentNode)
+    }
+  }
+}
+
+/**
+ * 
+ * @param {Node} sibling 
+ * @param {Node} target 
+ * 
+ * @returns {boolean}
+ */
+function isMergeable(sibling, target) {
+  const isWhiteSpaceNode = sibling.nodeType === Node.TEXT_NODE && sibling.textContent === " "
+   return  (isWhiteSpaceNode && target.nodeType === Node.ELEMENT_NODE) || sibling.nodeName === target.nodeName
+}

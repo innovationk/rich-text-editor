@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { findSimilarParentNode } from "./helpers";
+import { findSimilarParentNode, mergeWithSurroundings } from "./helpers";
 
 const HtmlElement = {
   Bold: "b",
@@ -61,6 +61,8 @@ function RichText() {
       wrapper.textContent = selectedText;
       range.deleteContents();
       range.insertNode(wrapper);
+
+      mergeWithSurroundings(wrapper);
 
       // Move the cursor to the end of the new wrapper
       selection.removeAllRanges();

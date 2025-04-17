@@ -32,7 +32,7 @@ function RichText() {
     //[WIP]Remove useless tag
     if (similarParentNode && selectedText === similarParentNode.innerHTML) {
       const textNode = document.createTextNode(selectedText);
-      editorRef.current.replaceChild(textNode, similarParentNode);
+      similarParentNode.parentNode.replaceChild(textNode, similarParentNode);
     } else if (similarParentNode) {
       // Split the similar parent node into three parts
       const parentInnerHTML = similarParentNode.innerHTML;

@@ -38,6 +38,7 @@ export function findSimilarParentNode(range, htmlElement, ref) {
       break;
     }
   }
+
   return similarParentNode;
 }
 

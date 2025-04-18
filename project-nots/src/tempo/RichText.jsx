@@ -1,5 +1,9 @@
 import { useRef } from "react";
-import { findSimilarParentNode, mergeWithSurroundings } from "./helpers";
+import {
+  findSimilarParentNode,
+  mergeWithSurroundings,
+  moveCursorToTheEnd,
+} from "./helpers";
 
 const HtmlElement = {
   Bold: "b",
@@ -18,6 +22,7 @@ function RichText() {
     const range = selection.getRangeAt(0);
     // rf: https://developer.mozilla.org/en-US/docs/Web/API/Range
     // To get indexes: range.startOffset and range.endOffset
+    console.log({ range });
 
     const selectedText = range.toString();
 
@@ -31,15 +36,18 @@ function RichText() {
 
     //[WIP]Remove useless tag
     if (similarParentNode && selectedText === similarParentNode.innerHTML) {
-      const textNode = document.createTextNode(selectedText);
-      similarParentNode.parentNode.replaceChild(textNode, similarParentNode);
+      console.log("ET NON MON PETIT!!");
+      // const textNode = document.createTextNode(selectedText);
+      // similarParentNode.parentNode.replaceChild(textNode, similarParentNode);
     } else if (similarParentNode) {
+      console.group("similar parent");
       // Split the similar parent node into three parts
       const parentInnerHTML = similarParentNode.innerHTML;
 
       let endNode = document.createElement(htmlElement);
       endNode.innerHTML = parentInnerHTML.substring(range.endOffset);
 
+      // mergeWithSurroundings(endNode);
       similarParentNode.parentNode.insertBefore(endNode, similarParentNode);
 
       //Avoid wrapping text inside a tag
@@ -47,28 +55,29 @@ function RichText() {
         parentInnerHTML.substring(range.startOffset, range.endOffset)
       );
 
+      // mergeWithSurroundings(middleNode);
       similarParentNode.parentNode.insertBefore(middleNode, endNode);
 
       let startNode = document.createElement(htmlElement);
       startNode.innerHTML = parentInnerHTML.substring(0, range.startOffset);
 
+      // mergeWithSurroundings(startNode);
       similarParentNode.parentNode.insertBefore(startNode, middleNode);
 
       // Remove the original
       similarParentNode.parentNode.removeChild(similarParentNode);
+      console.groupEnd();
     } else {
+      console.group("create element");
       const wrapper = document.createElement(htmlElement);
+      // range.surroundContents(wrapper);
       wrapper.textContent = selectedText;
       range.deleteContents();
       range.insertNode(wrapper);
 
       mergeWithSurroundings(wrapper);
-
-      // Move the cursor to the end of the new wrapper
-      selection.removeAllRanges();
-      const newRange = document.createRange();
-      newRange.setStartAfter(wrapper);
-      selection.addRange(newRange);
+      moveCursorToTheEnd(selection, wrapper);
+      console.groupEnd();
     }
   }
 
@@ -122,3 +131,5 @@ function RichText() {
   );
 }
 export default RichText;
+
+

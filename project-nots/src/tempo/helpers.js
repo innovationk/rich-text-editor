@@ -1,25 +1,5 @@
 /**
  *
- * @param {React.RefObject} ref
- * @param {Range} range
- * @returns {Element[]}
- */
-export function getParentNodes(ref, range) {
-  const parentNodes = [];
-
-  let currentNode = getClosestNodeFromSelection(range);
-  let hasReachedEditorNode = false;
-
-  while (!hasReachedEditorNode) {
-    parentNodes.push(currentNode);
-    hasReachedEditorNode = currentNode.id === ref.current.id;
-    currentNode = currentNode.parentNode;
-  }
-  return parentNodes;
-}
-
-/**
- *
  * @param {Range} range
  * @param {"b" | "i"} htmlElement
  * @param {React.RefObject} ref
@@ -44,6 +24,26 @@ export function findSimilarParentNode(range, htmlElement, ref) {
 
 /**
  *
+ * @param {React.RefObject} ref
+ * @param {Range} range
+ * @returns {Element[]}
+ */
+export function getParentNodes(ref, range) {
+  const parentNodes = [];
+
+  let currentNode = getClosestNodeFromSelection(range);
+  let hasReachedEditorNode = false;
+
+  while (!hasReachedEditorNode) {
+    parentNodes.push(currentNode);
+    hasReachedEditorNode = currentNode.id === ref.current.id;
+    currentNode = currentNode.parentNode;
+  }
+  return parentNodes;
+}
+
+/**
+ *
  * @param {Range} range
  * @returns {Element}
  */
@@ -61,4 +61,17 @@ function getClosestNodeFromSelection(range) {
   }
 
   return closestContainer;
+}
+
+/**
+ *
+ * @param {Node[]} tags
+ */
+export function clearEmptyTags(tags) {
+  for (const tag of tags) {
+    // if a tag is empty
+    if (tag.childNodes.length === 0) {
+      tag.parentNode.removeChild(tag);
+    }
+  }
 }

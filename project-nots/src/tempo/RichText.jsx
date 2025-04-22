@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { findSimilarParentNode } from "./helpers";
+import { clearEmptyTags, findSimilarParentNode } from "./helpers";
 
 const HtmlElement = {
   Bold: "b",
@@ -11,7 +11,6 @@ function RichText() {
 
   function addHtmlElement({ htmlElement }) {
     const selection = window.getSelection();
-
     //fail fast strategy
     if (!selection.rangeCount) return;
 
@@ -34,25 +33,25 @@ function RichText() {
       const textNode = document.createTextNode(selectedText);
       similarParentNode.parentNode.replaceChild(textNode, similarParentNode);
     } else if (similarParentNode) {
+      console.log("SIMILAR PARENT BRANCH");
       // Split the similar parent node into three parts
       const parentInnerHTML = similarParentNode.innerHTML;
+      const endNode = document.createElement(htmlElement);
+      const startIdx = parentInnerHTML.indexOf(selectedText);
+      const endIdx = startIdx + selectedText.length;
 
-      let endNode = document.createElement(htmlElement);
-      endNode.innerHTML = parentInnerHTML.substring(range.endOffset);
-
+      endNode.innerHTML = parentInnerHTML.substring(endIdx);
       similarParentNode.parentNode.insertBefore(endNode, similarParentNode);
 
       //Avoid wrapping text inside a tag
-      let middleNode = document.createTextNode(
-        parentInnerHTML.substring(range.startOffset, range.endOffset)
-      );
-
+      const middleNode = document.createTextNode(selectedText);
       similarParentNode.parentNode.insertBefore(middleNode, endNode);
 
-      let startNode = document.createElement(htmlElement);
-      startNode.innerHTML = parentInnerHTML.substring(0, range.startOffset);
-
+      const startNode = document.createElement(htmlElement);
+      startNode.innerHTML = parentInnerHTML.substring(0, startIdx);
       similarParentNode.parentNode.insertBefore(startNode, middleNode);
+
+      clearEmptyTags([startNode, endNode]);
 
       // Remove the original
       similarParentNode.parentNode.removeChild(similarParentNode);

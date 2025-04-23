@@ -2,11 +2,11 @@
  *
  * @param {Range} range
  * @param {"b" | "i"} htmlElement
- * @param {React.RefObject} ref
+ * @param {string} referenceID
  * @returns {Element}
  */
-export function findSimilarParentNode(range, htmlElement, ref) {
-  const parentNodes = getParentNodes(ref, range);
+export function findSimilarParentNode(range, htmlElement, referenceID) {
+  const parentNodes = getParentNodes(referenceID, range);
   let similarParentNode = null;
 
   for (const parentNode of parentNodes) {
@@ -24,11 +24,11 @@ export function findSimilarParentNode(range, htmlElement, ref) {
 
 /**
  *
- * @param {React.RefObject} ref
+ * @param {string} referenceID
  * @param {Range} range
  * @returns {Element[]}
  */
-export function getParentNodes(ref, range) {
+export function getParentNodes(referenceID, range) {
   const parentNodes = [];
 
   let currentNode = getClosestNodeFromSelection(range);
@@ -36,7 +36,7 @@ export function getParentNodes(ref, range) {
 
   while (!hasReachedEditorNode) {
     parentNodes.push(currentNode);
-    hasReachedEditorNode = currentNode.id === ref.current.id;
+    hasReachedEditorNode = currentNode.id === referenceID;
     currentNode = currentNode.parentNode;
   }
   return parentNodes;
@@ -50,11 +50,17 @@ export function getParentNodes(ref, range) {
 function getClosestNodeFromSelection(range) {
   let closestContainer = range.commonAncestorContainer;
 
+  console.log(closestContainer.childNodes.values())
+
   const childrenNodes = closestContainer.childNodes
     ?.values()
-    .filter((node) => node.nodeType === Node.ELEMENT_NODE);
+    // .filter((node) => node.nodeType === Node.ELEMENT_NODE);
 
   for (const child of childrenNodes) {
+    if(child.nodeType !== Node.ELEMENT_NODE) {
+      continue
+    }
+    
     if (range.intersectsNode(child)) {
       closestContainer = child;
     }

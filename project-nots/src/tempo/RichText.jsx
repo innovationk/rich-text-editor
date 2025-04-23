@@ -25,7 +25,7 @@ function RichText() {
     const similarParentNode = findSimilarParentNode(
       range,
       htmlElement,
-      editorRef
+      editorRef.current.id
     );
 
     //[WIP]Remove useless tag

@@ -52,13 +52,11 @@ function getClosestNodeFromSelection(range) {
 
   let closestContainer = range.commonAncestorContainer;
 
-  const childrenNodes = closestContainer.childNodes?.values();
+  if (closestContainer.nodeType !== Node.ELEMENT_NODE) {
+    closestContainer = closestContainer.parentNode;
+  }
 
-  for (const child of childrenNodes) {
-    if (child.nodeType !== Node.ELEMENT_NODE) {
-      continue;
-    }
-
+  for (const child of closestContainer.children) {
     if (range.intersectsNode(child)) {
       closestContainer = child;
     }

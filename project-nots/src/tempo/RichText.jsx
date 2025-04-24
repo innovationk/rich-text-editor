@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { clearEmptyTags, findSimilarParentNode } from "./helpers";
 
 const HtmlElement = {
@@ -8,6 +8,14 @@ const HtmlElement = {
 
 function RichText() {
   const editorRef = useRef();
+  const [selection, setSelection] = useState();
+
+  useEffect(() => {
+    document.addEventListener("mouseup", () => {
+      const selected = document.getSelection();
+      setSelection(selected.toString());
+    });
+  }, []);
 
   function addHtmlElement({ htmlElement }) {
     const selection = window.getSelection();
@@ -28,12 +36,7 @@ function RichText() {
       editorRef.current.id
     );
 
-    //[WIP]Remove useless tag
-    if (similarParentNode && selectedText === similarParentNode.innerHTML) {
-      const textNode = document.createTextNode(selectedText);
-      similarParentNode.parentNode.replaceChild(textNode, similarParentNode);
-    } else if (similarParentNode) {
-      console.log("SIMILAR PARENT BRANCH");
+    if (similarParentNode) {
       // Split the similar parent node into three parts
       const parentInnerHTML = similarParentNode.innerHTML;
       const endNode = document.createElement(htmlElement);
@@ -115,6 +118,45 @@ function RichText() {
         Donec eget velit sollicitudin, ultrices purus sed, volutpat erat. Sed
         hendrerit, eros non tristique congue, nibh felis eleifend nisi, sit amet
         laoreet ipsum orci vel lorem.
+      </div>
+      <div
+        style={{
+          marginTop: "20px",
+        }}
+      >
+        <h3>Selection preview:</h3>
+        <p
+          style={{
+            whiteSpace: "pre",
+            border: "1px solid black",
+          }}
+        >
+          {selection?.toString()}
+        </p>
+        <ul>
+          <li>length: {selection?.toString().length}</li>
+          <li>
+            first char:
+            <span style={{ whiteSpace: "pre", border: "1px dashed blue" }}>
+              {selection?.toString().slice(0, 1)}
+            </span>
+          </li>
+          <li>
+            last char:{" "}
+            <span style={{ whiteSpace: "pre", border: "1px dashed blue" }}>
+              {selection?.toString().slice(-1)}
+            </span>
+          </li>
+          <li>
+            number of spaces:{" "}
+            {
+              selection
+                ?.toString()
+                .split("")
+                .filter((char) => char === " ").length
+            }
+          </li>
+        </ul>
       </div>
     </>
   );

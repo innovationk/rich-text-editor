@@ -48,19 +48,17 @@ export function getParentNodes(referenceID, range) {
  * @returns {Element}
  */
 function getClosestNodeFromSelection(range) {
+  if (!range) throw Error(`You need to pass a range [given: ${range}]`);
+
   let closestContainer = range.commonAncestorContainer;
 
-  console.log(closestContainer.childNodes.values())
-
-  const childrenNodes = closestContainer.childNodes
-    ?.values()
-    // .filter((node) => node.nodeType === Node.ELEMENT_NODE);
+  const childrenNodes = closestContainer.childNodes?.values();
 
   for (const child of childrenNodes) {
-    if(child.nodeType !== Node.ELEMENT_NODE) {
-      continue
+    if (child.nodeType !== Node.ELEMENT_NODE) {
+      continue;
     }
-    
+
     if (range.intersectsNode(child)) {
       closestContainer = child;
     }
@@ -76,7 +74,7 @@ function getClosestNodeFromSelection(range) {
 export function clearEmptyTags(tags) {
   for (const tag of tags) {
     // if a tag is empty
-    if (tag.childNodes.length === 0) {
+    if (tag.childNodes.length === 0 && tag.nodeType !== 3) {
       tag.parentNode.removeChild(tag);
     }
   }

@@ -37,6 +37,7 @@ function RichText() {
       // Split the similar parent node into three parts
       const parentInnerHTML = similarParentNode.innerHTML;
       const endNode = document.createElement(htmlElement);
+
       const startIdx = parentInnerHTML.indexOf(selectedText);
       const endIdx = startIdx + selectedText.length;
 

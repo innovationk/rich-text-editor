@@ -1,5 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import { clearEmptyTags, findSimilarParentNode } from "./helpers";
+import {
+  cleanEmptyTags,
+  createGivenElement,
+  createTextNode,
+  findSimilarParentNode,
+} from "./helpers";
 
 const HtmlElement = {
   Bold: "b",
@@ -19,6 +24,7 @@ function RichText() {
 
   function addHtmlElement({ htmlElement }) {
     const selection = window.getSelection();
+
     //fail fast strategy
     if (!selection.rangeCount) return;
 
@@ -39,23 +45,31 @@ function RichText() {
     if (similarParentNode) {
       // Split the similar parent node into three parts
       const parentInnerHTML = similarParentNode.innerHTML;
-      const endNode = document.createElement(htmlElement);
 
       const startIdx = parentInnerHTML.indexOf(selectedText);
       const endIdx = startIdx + selectedText.length;
 
-      endNode.innerHTML = parentInnerHTML.substring(endIdx);
+      const endNodeContent = parentInnerHTML.substring(endIdx);
+
+      const endNode =
+        endNodeContent === " "
+          ? createTextNode(endNodeContent)
+          : createGivenElement(htmlElement, endNodeContent);
+
       similarParentNode.parentNode.insertBefore(endNode, similarParentNode);
 
       //Avoid wrapping text inside a tag
       const middleNode = document.createTextNode(selectedText);
       similarParentNode.parentNode.insertBefore(middleNode, endNode);
 
-      const startNode = document.createElement(htmlElement);
-      startNode.innerHTML = parentInnerHTML.substring(0, startIdx);
+      const startNodeContent = parentInnerHTML.substring(0, startIdx);
+      const startNode =
+        startNodeContent === " "
+          ? createTextNode(startNodeContent)
+          : createGivenElement(htmlElement, startNodeContent);
       similarParentNode.parentNode.insertBefore(startNode, middleNode);
 
-      clearEmptyTags([startNode, endNode]);
+      cleanEmptyTags([startNode, endNode]);
 
       // Remove the original
       similarParentNode.parentNode.removeChild(similarParentNode);
@@ -71,6 +85,9 @@ function RichText() {
       newRange.setStartAfter(wrapper);
       selection.addRange(newRange);
     }
+
+    //merge text nodes
+    editorRef.current.normalize();
   }
 
   return (
@@ -116,8 +133,8 @@ function RichText() {
         Vestibulum convallis tellus sed sapien aliquam, vitae vestibulum velit
         pulvinar. Sed nunc enim, congue non laoreet ut, facilisis eu turpis.
         Donec eget velit sollicitudin, ultrices purus sed, volutpat erat. Sed
-        hendrerit, eros non tristique congue, nibh felis eleifend nisi, sit amet
-        laoreet ipsum orci vel lorem.
+        hendrerit, eros <b>non tristique congue</b>, nibh felis eleifend nisi,
+        sit amet laoreet ipsum orci vel lorem.
       </div>
       <div
         style={{
@@ -156,6 +173,8 @@ function RichText() {
                 .filter((char) => char === " ").length
             }
           </li>
+          <li>anchor node: {selection?.anchorNode?.nodeName}</li>
+          <li>focus node: {selection?.focusNode?.nodeName}</li>
         </ul>
       </div>
     </>

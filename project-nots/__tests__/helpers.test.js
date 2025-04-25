@@ -1,7 +1,9 @@
 import { JSDOM } from "jsdom";
 import { afterAll, afterEach, beforeAll, describe, expect, test } from "vitest";
 import {
-  clearEmptyTags,
+  cleanEmptyTags,
+  createTextNode,
+  createGivenElement,
   findSimilarParentNode,
   getParentNodes,
 } from "../src/tempo/helpers";
@@ -39,7 +41,7 @@ describe("Helpers functionnalities", () => {
   describe("findSimilarParentNode", () => {
     test("should find container has parent node", () => {
       const wrapper = getWrapper();
-      const child = createElement("b");
+      const child = createGivenElement("b");
       const range = createRange();
 
       child.id = "first-child";
@@ -92,7 +94,7 @@ describe("Helpers functionnalities", () => {
 
     test("should return 2 parent node", () => {
       const wrapper = getWrapper();
-      const child = createElement("b");
+      const child = createGivenElement("b");
       const range = createRange();
 
       child.textContent = "content of b element";
@@ -107,13 +109,13 @@ describe("Helpers functionnalities", () => {
     });
   });
 
-  describe("clearEmptyTags", () => {
+  describe("cleanEmptyTags", () => {
     test("should let container with only its text node", () => {
       const wrapper = getWrapper();
-      const child = createElement("b");
+      const child = createGivenElement("b");
       wrapper.appendChild(child);
 
-      clearEmptyTags(wrapper.childNodes);
+      cleanEmptyTags(wrapper.childNodes);
 
       expect(wrapper.childNodes.length).toBe(1);
       expect(wrapper.childNodes[0].nodeType).toBe(3); //TextNode
@@ -121,15 +123,32 @@ describe("Helpers functionnalities", () => {
 
     test("should not remove tag if its length > 0", () => {
       const wrapper = getWrapper();
-      const child = createElement("b");
+      const child = createGivenElement("b");
       child.textContent = " ";
       wrapper.appendChild(child);
 
-      clearEmptyTags(wrapper.childNodes);
+      cleanEmptyTags(wrapper.childNodes);
 
       expect(wrapper.childNodes.length).toBe(2);
       expect(wrapper.childNodes[0].nodeType).toBe(3); //TextNode
       expect(wrapper.childNodes[1].nodeType).toBe(1); //ElementNode
+    });
+  });
+
+  describe("Node creation helpers", () => {
+    test("should create a text node with the given content", () => {
+      const node = createTextNode("text content");
+
+      expect(node.nodeType).toBe(3);
+      expect(node.textContent).toEqual("text content");
+    });
+
+    test("should create a B node with the given content", () => {
+      const boldElement = createGivenElement("b", "bold content");
+
+      expect(boldElement.nodeType).toBe(1);
+      expect(boldElement.nodeName).toBe("B");
+      expect(boldElement.textContent).toEqual("bold content");
     });
   });
 });
@@ -142,14 +161,4 @@ function getWrapper() {
 function createRange() {
   const { document } = dom.window;
   return document.createRange();
-}
-
-/**
- *
- * @param {"b" | "i"} elt
- * @returns {Node}
- */
-function createElement(elt) {
-  const { document } = dom.window;
-  return document.createElement(elt);
 }

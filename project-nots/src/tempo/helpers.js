@@ -69,11 +69,34 @@ function getClosestNodeFromSelection(range) {
  *
  * @param {Node[]} tags
  */
-export function clearEmptyTags(tags) {
+export function cleanEmptyTags(tags) {
   for (const tag of tags) {
     // if a tag is empty
     if (tag.childNodes.length === 0 && tag.nodeType !== 3) {
       tag.parentNode.removeChild(tag);
     }
   }
+}
+
+/**
+ *
+ * @param {string} content
+ * @returns {Node}
+ */
+export function createTextNode(content) {
+  return document.createTextNode(content);
+}
+
+/**
+ *
+ * @param {"b" | "i"} element
+ * @param {string} content
+ *
+ * @returns {Node}
+ */
+export function createGivenElement(element, content) {
+  const newElement = document.createElement(element);
+  newElement.textContent = content;
+
+  return newElement;
 }

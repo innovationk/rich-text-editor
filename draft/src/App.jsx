@@ -11,17 +11,16 @@ function App() {
         if (!selection.rangeCount) return;
 
         const range = selection.getRangeAt(0);
+        // TODO: trim range
+
         const selectedText = range.toString();
 
         if (selectedText.length <= 0) return;
 
-
         const referenceID = editorRef.current.id;
         console.log("ref", referenceID, range);
 
-        // const parentNodes = getParentNodes(referenceID, range);
-        // console.log("parentNodes", parentNodes);
-
+        // TODO: case inside same htmlelement
 
         const wrapper = document.createElement(htmlElement);
         wrapper.textContent = selectedText;
@@ -45,38 +44,6 @@ function App() {
 
         setHierarchy(editorRef.current.innerHTML);
     };
-
-    // const getParentNodes = (referenceID, range) => {
-    //     const parentNodes = [];
-
-    //     let currentNode = getClosestNodeFromSelection(range);
-    //     let hasReachedEditorNode = false;
-
-    //     while (!hasReachedEditorNode) {
-    //         parentNodes.push(currentNode);
-    //         hasReachedEditorNode = currentNode.id === referenceID;
-    //         currentNode = currentNode.parentNode;
-    //     }
-    //     return parentNodes;
-    // };
-
-    // const getClosestNodeFromSelection = (range) => {
-    //     if (!range) throw Error(`You need to pass a range [given: ${range}]`);
-
-    //     let closestContainer = range.commonAncestorContainer;
-
-    //     if (closestContainer.nodeType !== Node.ELEMENT_NODE) {
-    //         closestContainer = closestContainer.parentNode;
-    //     }
-
-    //     for (const child of closestContainer.children) {
-    //         if (range.intersectsNode(child)) {
-    //             closestContainer = child;
-    //         }
-    //     }
-
-    //     return closestContainer;
-    // };
 
 
     return (

@@ -4,9 +4,7 @@ function App() {
     const editorRef = useRef();
     const [hierarchy, setHierarchy] = useState();
 
-    const addHtmlElement = (
-        // { htmlElement }
-    ) => {
+    const addHtmlElement = ({ htmlElement, style = {} }) => {
         // TODO: use ref instead of doc
         const selection = document.getSelection();
 
@@ -25,8 +23,12 @@ function App() {
         // console.log("parentNodes", parentNodes);
 
 
-        const wrapper = document.createElement("SPAN");
+        const wrapper = document.createElement(htmlElement);
         wrapper.textContent = selectedText;
+        for (const [styleKey, styleValue] of Object.entries(style)) {
+            wrapper.setAttribute("style", `${styleKey}: ${styleValue}`);
+        }
+
         range.deleteContents();
         range.insertNode(wrapper);
 
@@ -88,9 +90,10 @@ function App() {
                 <div>
                     <button
                         onClick={() => {
-                            addHtmlElement(
-                                // { htmlElement: { fontWeight: "bold" } }
-                            );
+                            addHtmlElement({
+                                htmlElement: "span",
+                                style: { ["font-weight"]: "bold" }
+                            });
                         }}
                     >
                         b

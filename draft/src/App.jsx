@@ -10,11 +10,48 @@ function App() {
         return editorRef.current.ownerDocument.getSelection();
     };
 
+    function trimRange(range) {
+        if (!range || range.collapsed) return null;
+
+        let { startContainer, startOffset, endContainer, endOffset } = range;
+
+        // Trim start
+        if (startContainer.nodeType === Node.TEXT_NODE) {
+            const text = startContainer.textContent;
+            let iStart = startOffset;
+
+            while (iStart < text.length && text[iStart] === " ") {
+                ++iStart;
+            }
+
+            if (iStart !== startOffset) {
+                range.setStart(startContainer, iStart);
+            }
+        }
+
+        // Trim end
+        if (endContainer.nodeType === Node.TEXT_NODE) {
+            const text = endContainer.textContent;
+            let iEnd = endOffset - 1;
+
+            while (iEnd >= 0 && text[iEnd] === " ") {
+                --iEnd;
+            }
+
+            if (iEnd !== endOffset - 1) {
+                range.setEnd(endContainer, iEnd + 1);
+            }
+        }
+
+        return range.collapsed ? null : range;
+    }
+
+
     const addHtmlElement = ({ htmlElement, style = {} }) => {
         const selection = getEditorSelection();
         if (!selection || !selection.rangeCount) return;
 
-        const range = selection.getRangeAt(0);
+        let range = selection.getRangeAt(0);
 
         // Ensure selection is inside the editor
         if (!editorRef.current.contains(range.commonAncestorContainer)) {
@@ -24,18 +61,13 @@ function App() {
         // No empty selections
         if (range.collapsed) return;
 
-        // TODO: trim range
-
-        const selectedText = range.toString();
-        if (!selectedText || selectedText.length <= 0) return;
-
-        const referenceID = editorRef.current.id;
-        // console.log("ref", referenceID, range);
+        range = trimRange(range);
+        if (!range) return;
 
         // TODO: case inside same htmlelement
 
-        const wrapper = document.createElement(htmlElement);
-        wrapper.textContent = selectedText;
+        const wrapper = editorRef.current.ownerDocument.createElement(htmlElement);
+        wrapper.textContent = range.toString();
         for (const [styleKey, styleValue] of Object.entries(style)) {
             wrapper.style[styleKey] = styleValue;
         }
@@ -45,7 +77,7 @@ function App() {
 
         // Move the cursor to the end of the new wrapper
         selection.removeAllRanges();
-        const newRange = document.createRange();
+        const newRange = editorRef.current.ownerDocument.createRange();
         newRange.setStartAfter(wrapper);
         selection.addRange(newRange);
 

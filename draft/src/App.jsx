@@ -5,9 +5,13 @@ function App() {
     const editorId = useRef(`richtext_${crypto.randomUUID()}`);
     const [hierarchy, setHierarchy] = useState();
 
+    const getEditorSelection = () => {
+        if (!editorRef.current) return null;
+        return editorRef.current.ownerDocument.getSelection();
+    };
+
     const addHtmlElement = ({ htmlElement, style = {} }) => {
-        // TODO: use ref instead of doc
-        const selection = document.getSelection();
+        const selection = getEditorSelection();
         if (!selection || !selection.rangeCount) return;
 
         const range = selection.getRangeAt(0);
@@ -27,7 +31,7 @@ function App() {
         if (selectedText.length <= 0) return;
 
         const referenceID = editorRef.current.id;
-        console.log("ref", referenceID, range);
+        // console.log("ref", referenceID, range);
 
         // TODO: case inside same htmlelement
 

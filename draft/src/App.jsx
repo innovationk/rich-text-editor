@@ -77,7 +77,7 @@ function App() {
 
         // Move the cursor to the end of the new wrapper
         selection.removeAllRanges();
-        const newRange = editorRef.current.ownerDocument.createRange();
+        const newRange = document.createRange();
         newRange.setStartAfter(wrapper);
         selection.addRange(newRange);
 

@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 
 function App() {
     const editorRef = useRef();
+    const editorId = useRef(`richtext_${crypto.randomUUID()}`);
     const [hierarchy, setHierarchy] = useState();
 
     const addHtmlElement = ({ htmlElement, style = {} }) => {
@@ -70,7 +71,7 @@ function App() {
                     ref={editorRef}
                     contentEditable
                     suppressContentEditableWarning={true}
-                    id={`richtext_${Date.now()}`}
+                    id={editorId.current}
                     style={{
                         border: "1px solid #ccc",
                         padding: "10px",

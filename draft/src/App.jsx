@@ -34,7 +34,7 @@ function App() {
         const wrapper = document.createElement(htmlElement);
         wrapper.textContent = selectedText;
         for (const [styleKey, styleValue] of Object.entries(style)) {
-            wrapper.setAttribute("style", `${styleKey}: ${styleValue}`);
+            wrapper.style[styleKey] = styleValue;
         }
 
         range.deleteContents();

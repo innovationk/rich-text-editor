@@ -8,10 +8,18 @@ function App() {
     const addHtmlElement = ({ htmlElement, style = {} }) => {
         // TODO: use ref instead of doc
         const selection = document.getSelection();
-
-        if (!selection.rangeCount) return;
+        if (!selection || !selection.rangeCount) return;
 
         const range = selection.getRangeAt(0);
+
+        // Ensure selection is inside the editor
+        if (!editorRef.current.contains(range.commonAncestorContainer)) {
+            return;
+        }
+
+        // No empty selections
+        if (range.collapsed) return;
+
         // TODO: trim range
 
         const selectedText = range.toString();

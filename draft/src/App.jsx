@@ -27,8 +27,7 @@ function App() {
         // TODO: trim range
 
         const selectedText = range.toString();
-
-        if (selectedText.length <= 0) return;
+        if (!selectedText || selectedText.length <= 0) return;
 
         const referenceID = editorRef.current.id;
         // console.log("ref", referenceID, range);
@@ -52,8 +51,6 @@ function App() {
 
         //merge text nodes
         editorRef.current.normalize();
-
-
 
         setHierarchy(editorRef.current.innerHTML);
     };

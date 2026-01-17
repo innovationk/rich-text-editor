@@ -71,6 +71,20 @@ function App() {
         range.insertNode(wrapper);
     }
 
+    const removeNode = (node) => {
+        // Move all child nodes to the parent
+        const parentForBackup = node.parentNode;
+        while (node.firstChild) {
+            parentForBackup.insertBefore(
+                node.firstChild,
+                node
+            );
+        }
+
+        // Remove the now-empty container
+        node.remove();
+    }
+
     const addHtmlElement = ({ htmlElement, style = {} }) => {
         const selection = getEditorSelection();
         if (!selection || !selection.rangeCount) return;
@@ -121,17 +135,7 @@ function App() {
                     }
 
                     if (closestParentContainer.getAttribute("style") === "") {
-                        // Move all child nodes to the parent
-                        const parentForBackup = closestParentContainer.parentNode;
-                        while (closestParentContainer.firstChild) {
-                            parentForBackup.insertBefore(
-                                closestParentContainer.firstChild,
-                                closestParentContainer
-                            );
-                        }
-
-                        // Remove the now-empty container
-                        closestParentContainer.remove();
+                        removeNode(closestParentContainer);
                     }
 
                 } else {

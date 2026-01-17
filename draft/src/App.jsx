@@ -10,7 +10,7 @@ function App() {
         return editorRef.current.ownerDocument.getSelection();
     };
 
-    function trimRange(range) {
+    const trimRange = (range) => {
         if (!range || range.collapsed) return null;
 
         let { startContainer, startOffset, endContainer, endOffset } = range;
@@ -46,7 +46,7 @@ function App() {
         return range.collapsed ? null : range;
     }
 
-    function getClosestParentNode(range) {
+    const getClosestParentNode = (range) => {
         let closestParentContainer = range.commonAncestorContainer;
 
         if (closestParentContainer.nodeType !== Node.ELEMENT_NODE) {
@@ -60,6 +60,15 @@ function App() {
         }
 
         return closestParentContainer;
+    }
+
+    const addNode = (range, htmlElement, styleKey, styleValue) => {
+        const wrapper = editorRef.current.ownerDocument.createElement(htmlElement);
+        wrapper.textContent = range.toString();
+        wrapper.style[styleKey] = styleValue;
+
+        range.deleteContents();
+        range.insertNode(wrapper);
     }
 
     const addHtmlElement = ({ htmlElement, style = {} }) => {
@@ -96,13 +105,7 @@ function App() {
         if (closestParentContainer.id === editorId.current) {
             // Root case : add span directly
             console.log("Root case", closestParentContainer);
-
-            const wrapper = editorRef.current.ownerDocument.createElement(htmlElement);
-            wrapper.textContent = range.toString();
-            wrapper.style[styleKey] = styleValue;
-
-            range.deleteContents();
-            range.insertNode(wrapper);
+            addNode(range, htmlElement, styleKey, styleValue);
 
         } else {
             // Selection inside a node case
@@ -137,12 +140,7 @@ function App() {
 
             } else {
                 // Sub node case
-                const wrapper = editorRef.current.ownerDocument.createElement(htmlElement);
-                wrapper.textContent = range.toString();
-                wrapper.style[styleKey] = styleValue;
-
-                range.deleteContents();
-                range.insertNode(wrapper);
+                addNode(range, htmlElement, styleKey, styleValue);
             }
         }
 

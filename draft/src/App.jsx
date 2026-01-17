@@ -184,6 +184,17 @@ function App() {
                     >
                         i
                     </button>
+
+                    <button
+                        onClick={() => {
+                            addHtmlElement({
+                                htmlElement: "span",
+                                style: { ["text-decoration"]: "underline" }
+                            });
+                        }}
+                    >
+                        <u>u</u>
+                    </button>
                 </div>
                 <div
                     ref={editorRef}

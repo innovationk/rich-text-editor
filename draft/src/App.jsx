@@ -135,7 +135,9 @@ function App() {
                     removeNode(closestParentContainer);
 
                 } else {
-                    const shouldRemove = (closestParentContainer.getAttribute("style")).includes(styleKey);
+                    const shouldRemove = (closestParentContainer.getAttribute("style")).includes(styleKey)
+                        && (closestParentContainer.getAttribute("style")).includes(styleValue)
+                        ;
 
                     if (shouldRemove) {
                         for (const styleKey of Object.keys(style)) {
@@ -213,6 +215,17 @@ function App() {
                         }}
                     >
                         <u>u</u>
+                    </button>
+
+                    <button
+                        onClick={() => {
+                            addHtmlElement({
+                                htmlElement: "span",
+                                style: { ["text-decoration"]: "line-through" }
+                            });
+                        }}
+                    >
+                        <del>S</del>
                     </button>
 
                     <button

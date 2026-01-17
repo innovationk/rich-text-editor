@@ -104,17 +104,12 @@ function App() {
             range.deleteContents();
             range.insertNode(wrapper);
 
-            // Move the cursor to the end of the new wrapper
-            selection.removeAllRanges();
-            const newRange = document.createRange();
-            newRange.setStartAfter(wrapper);
-            selection.addRange(newRange);
-
         } else {
-            // Same node case : should add or remove style and then clean span ?
+            // Selection inside a node case
             console.log("Node case", closestParentContainer);
 
             if (range.toString() === closestParentContainer.innerHTML) {
+                // Same node case : should add or remove style and then clean span ?
                 const shouldRemove = (closestParentContainer.getAttribute("style")).includes(styleKey);
 
                 if (shouldRemove) {
@@ -139,11 +134,20 @@ function App() {
                 } else {
                     closestParentContainer.style[styleKey] = styleValue;
                 }
-            }
 
-            // Move the cursor to the end of the new wrapper
-            selection.removeAllRanges();
+            } else {
+                // Sub node case
+                const wrapper = editorRef.current.ownerDocument.createElement(htmlElement);
+                wrapper.textContent = range.toString();
+                wrapper.style[styleKey] = styleValue;
+
+                range.deleteContents();
+                range.insertNode(wrapper);
+            }
         }
+
+        // Move the cursor to the end of the new wrapper
+        selection.removeAllRanges();
 
         //merge text nodes
         editorRef.current.normalize();

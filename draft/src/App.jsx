@@ -195,7 +195,6 @@ function App() {
                     >
                         b
                     </button>
-
                     <button
                         onClick={() => {
                             addHtmlElement({
@@ -206,7 +205,6 @@ function App() {
                     >
                         i
                     </button>
-
                     <button
                         onClick={() => {
                             addHtmlElement({
@@ -217,7 +215,6 @@ function App() {
                     >
                         <u>u</u>
                     </button>
-
                     <button
                         onClick={() => {
                             addHtmlElement({
@@ -227,6 +224,47 @@ function App() {
                         }}
                     >
                         <del>S</del>
+                    </button>
+
+                    <button
+                        onClick={() => {
+                            addHtmlElement({
+                                htmlElement: "div",
+                                style: { ["text-align"]: "left" }
+                            });
+                        }}
+                    >
+                        left
+                    </button>
+                    <button
+                        onClick={() => {
+                            addHtmlElement({
+                                htmlElement: "div",
+                                style: { ["text-align"]: "right" }
+                            });
+                        }}
+                    >
+                        right
+                    </button>
+                    <button
+                        onClick={() => {
+                            addHtmlElement({
+                                htmlElement: "div",
+                                style: { ["text-align"]: "center" }
+                            });
+                        }}
+                    >
+                        center
+                    </button>
+                    <button
+                        onClick={() => {
+                            addHtmlElement({
+                                htmlElement: "div",
+                                style: { ["text-align"]: "justify" }
+                            });
+                        }}
+                    >
+                        justify
                     </button>
 
                     <button
@@ -264,6 +302,11 @@ function App() {
                     hendrerit, eros non tristique congue, nibh felis eleifend nisi,
                     sit amet laoreet ipsum orci vel lorem.
                 </div>
+            </div>
+
+            <div>
+                <h2>Result</h2>
+                <div dangerouslySetInnerHTML={{ __html: hierarchy }} />
             </div>
 
             <div>

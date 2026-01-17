@@ -205,7 +205,8 @@ function App() {
         }
 
         // Move the cursor to the end of the new wrapper
-        selection.removeAllRanges();
+        // 20260117 : no more for UX reasons
+        // selection.removeAllRanges();
 
         //merge text nodes
         editorRef.current.normalize();

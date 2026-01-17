@@ -46,6 +46,21 @@ function App() {
         return range.collapsed ? null : range;
     }
 
+    function getClosestParentNode(range) {
+        let closestParentContainer = range.commonAncestorContainer;
+
+        if (closestParentContainer.nodeType !== Node.ELEMENT_NODE) {
+            closestParentContainer = closestParentContainer.parentNode;
+        }
+
+        for (const child of closestParentContainer.children) {
+            if (range.intersectsNode(child)) {
+                closestParentContainer = child;
+            }
+        }
+
+        return closestParentContainer;
+    }
 
     const addHtmlElement = ({ htmlElement, style = {} }) => {
         const selection = getEditorSelection();
@@ -64,22 +79,60 @@ function App() {
         range = trimRange(range);
         if (!range) return;
 
-        // TODO: case inside same htmlelement
+        // TODO: check if extact span
+        // console.log(range, range.toString());
+        let closestParentContainer = getClosestParentNode(range);
 
-        const wrapper = editorRef.current.ownerDocument.createElement(htmlElement);
-        wrapper.textContent = range.toString();
-        for (const [styleKey, styleValue] of Object.entries(style)) {
-            wrapper.style[styleKey] = styleValue;
+        // console.log(closestContainer, closestContainer.id, editorId.current);
+        if (closestParentContainer.id === editorId.current) {
+            // Root case : add span directly
+            console.log("Root case", closestParentContainer);
+
+            const wrapper = editorRef.current.ownerDocument.createElement(htmlElement);
+            wrapper.textContent = range.toString();
+            for (const [styleKey, styleValue] of Object.entries(style)) {
+                wrapper.style[styleKey] = styleValue;
+            }
+
+            range.deleteContents();
+            range.insertNode(wrapper);
+
+            // Move the cursor to the end of the new wrapper
+            selection.removeAllRanges();
+            const newRange = document.createRange();
+            newRange.setStartAfter(wrapper);
+            selection.addRange(newRange);
+
+        } else {
+            // Node case : should add or remove span ?
+            console.log("Node case", closestParentContainer);
+
+            if (range.toString() === closestParentContainer.innerHTML) {
+                // TODO: check if remove or add
+
+                // Remove style
+                for (const styleKey of Object.keys(style)) {
+                    closestParentContainer.style[styleKey] = "";
+                }
+
+                if (closestParentContainer.getAttribute("style") === "") {
+                    // Move all child nodes to the parent
+                    const parentForBackup = closestParentContainer.parentNode;
+                    while (closestParentContainer.firstChild) {
+                        parentForBackup.insertBefore(
+                            closestParentContainer.firstChild,
+                            closestParentContainer
+                        );
+                    }
+
+                    // Remove the now-empty container
+                    closestParentContainer.remove();
+                }
+            }
+
+            // Move the cursor to the end of the new wrapper
+            selection.removeAllRanges();
         }
-
-        range.deleteContents();
-        range.insertNode(wrapper);
-
-        // Move the cursor to the end of the new wrapper
-        selection.removeAllRanges();
-        const newRange = document.createRange();
-        newRange.setStartAfter(wrapper);
-        selection.addRange(newRange);
 
         //merge text nodes
         editorRef.current.normalize();

@@ -109,7 +109,7 @@ function App() {
             styleKey = _styleKey;
             styleValue = _styleValue;
         }
-        if (styleKey === "" || styleValue === "") return;
+        if (htmlElement !== "clear" && (styleKey === "" || styleValue === "")) return;
 
 
         // console.log(range, range.toString());
@@ -119,7 +119,10 @@ function App() {
         if (closestParentContainer.id === editorId.current) {
             // Root case : add span directly
             console.log("Root case", closestParentContainer);
-            addNode(range, htmlElement, styleKey, styleValue);
+
+            if (htmlElement !== "clear") {
+                addNode(range, htmlElement, styleKey, styleValue);
+            }
 
         } else {
             // Selection inside a node case
@@ -127,24 +130,36 @@ function App() {
 
             if (range.toString() === closestParentContainer.innerHTML) {
                 // Same node case : should add or remove style and then clean span ?
-                const shouldRemove = (closestParentContainer.getAttribute("style")).includes(styleKey);
 
-                if (shouldRemove) {
-                    for (const styleKey of Object.keys(style)) {
-                        closestParentContainer.style[styleKey] = "";
-                    }
-
-                    if (closestParentContainer.getAttribute("style") === "") {
-                        removeNode(closestParentContainer);
-                    }
+                if (htmlElement === "clear") {
+                    removeNode(closestParentContainer);
 
                 } else {
-                    closestParentContainer.style[styleKey] = styleValue;
+                    const shouldRemove = (closestParentContainer.getAttribute("style")).includes(styleKey);
+
+                    if (shouldRemove) {
+                        for (const styleKey of Object.keys(style)) {
+                            closestParentContainer.style[styleKey] = "";
+                        }
+
+                        if (closestParentContainer.getAttribute("style") === "") {
+                            removeNode(closestParentContainer);
+                        }
+
+                    } else {
+                        closestParentContainer.style[styleKey] = styleValue;
+                    }
                 }
 
             } else {
                 // Sub node case
-                addNode(range, htmlElement, styleKey, styleValue);
+
+                if (htmlElement === "clear") {
+                    removeNode(closestParentContainer);
+
+                } else {
+                    addNode(range, htmlElement, styleKey, styleValue);
+                }
             }
         }
 
@@ -198,6 +213,17 @@ function App() {
                         }}
                     >
                         <u>u</u>
+                    </button>
+
+                    <button
+                        onClick={() => {
+                            addHtmlElement({
+                                htmlElement: "clear",
+                                style: {}
+                            });
+                        }}
+                    >
+                        clear
                     </button>
                 </div>
                 <div

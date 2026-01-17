@@ -109,7 +109,7 @@ function App() {
             styleKey = _styleKey;
             styleValue = _styleValue;
         }
-        if (htmlElement !== "clear" && (styleKey === "" || styleValue === "")) return;
+        if (htmlElement === "span" && (styleKey === "" || styleValue === "")) return;
 
 
         // console.log(range, range.toString());
@@ -128,6 +128,8 @@ function App() {
             // Selection inside a node case
             console.log("Node case", closestParentContainer);
 
+            // TODO : closestParentContainer.nodeName to check if span, div or others
+
             if (range.toString() === closestParentContainer.innerHTML) {
                 // Same node case : should add or remove style and then clean span ?
 
@@ -136,8 +138,7 @@ function App() {
 
                 } else {
                     const shouldRemove = (closestParentContainer.getAttribute("style")).includes(styleKey)
-                        && (closestParentContainer.getAttribute("style")).includes(styleValue)
-                        ;
+                        && (closestParentContainer.getAttribute("style")).includes(styleValue);
 
                     if (shouldRemove) {
                         for (const styleKey of Object.keys(style)) {

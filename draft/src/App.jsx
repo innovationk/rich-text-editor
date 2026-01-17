@@ -79,7 +79,16 @@ function App() {
         range = trimRange(range);
         if (!range) return;
 
-        // TODO: check if extact span
+
+        let styleKey = "";
+        let styleValue = "";
+        for (const [_styleKey, _styleValue] of Object.entries(style)) {
+            styleKey = _styleKey;
+            styleValue = _styleValue;
+        }
+        if (styleKey === "" || styleValue === "") return;
+
+
         // console.log(range, range.toString());
         let closestParentContainer = getClosestParentNode(range);
 
@@ -90,9 +99,7 @@ function App() {
 
             const wrapper = editorRef.current.ownerDocument.createElement(htmlElement);
             wrapper.textContent = range.toString();
-            for (const [styleKey, styleValue] of Object.entries(style)) {
-                wrapper.style[styleKey] = styleValue;
-            }
+            wrapper.style[styleKey] = styleValue;
 
             range.deleteContents();
             range.insertNode(wrapper);
@@ -104,29 +111,33 @@ function App() {
             selection.addRange(newRange);
 
         } else {
-            // Node case : should add or remove span ?
+            // Same node case : should add or remove style and then clean span ?
             console.log("Node case", closestParentContainer);
 
             if (range.toString() === closestParentContainer.innerHTML) {
-                // TODO: check if remove or add
+                const shouldRemove = (closestParentContainer.getAttribute("style")).includes(styleKey);
 
-                // Remove style
-                for (const styleKey of Object.keys(style)) {
-                    closestParentContainer.style[styleKey] = "";
-                }
-
-                if (closestParentContainer.getAttribute("style") === "") {
-                    // Move all child nodes to the parent
-                    const parentForBackup = closestParentContainer.parentNode;
-                    while (closestParentContainer.firstChild) {
-                        parentForBackup.insertBefore(
-                            closestParentContainer.firstChild,
-                            closestParentContainer
-                        );
+                if (shouldRemove) {
+                    for (const styleKey of Object.keys(style)) {
+                        closestParentContainer.style[styleKey] = "";
                     }
 
-                    // Remove the now-empty container
-                    closestParentContainer.remove();
+                    if (closestParentContainer.getAttribute("style") === "") {
+                        // Move all child nodes to the parent
+                        const parentForBackup = closestParentContainer.parentNode;
+                        while (closestParentContainer.firstChild) {
+                            parentForBackup.insertBefore(
+                                closestParentContainer.firstChild,
+                                closestParentContainer
+                            );
+                        }
+
+                        // Remove the now-empty container
+                        closestParentContainer.remove();
+                    }
+
+                } else {
+                    closestParentContainer.style[styleKey] = styleValue;
                 }
             }
 
@@ -159,6 +170,17 @@ function App() {
                         }}
                     >
                         b
+                    </button>
+
+                    <button
+                        onClick={() => {
+                            addHtmlElement({
+                                htmlElement: "span",
+                                style: { ["font-style"]: "italic" }
+                            });
+                        }}
+                    >
+                        i
                     </button>
                 </div>
                 <div

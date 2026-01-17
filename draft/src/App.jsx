@@ -1,5 +1,43 @@
 import { useRef, useState } from 'react';
 
+const COLOURS = [
+    // Grayscale
+    "#000000", // Black
+    "#434343", // Dark Gray
+    "#666666", // Gray
+    "#999999", // Light Gray
+    "#CCCCCC", // Silver
+    "#FFFFFF", // White
+
+    // Primary Colors
+    "#FF0000", // Red
+    "#00FF00", // Green
+    "#0000FF", // Blue
+
+    // Secondary Colors
+    "#FFFF00", // Yellow
+    "#00FFFF", // Cyan
+    "#FF00FF", // Magenta
+
+    // Extended Palette
+    "#FFA500", // Orange
+    "#800080", // Purple
+    "#A52A2A", // Brown
+    "#808000", // Olive
+    "#008000", // Dark Green
+    "#008080", // Teal
+    "#000080", // Navy
+    "#800000", // Maroon
+
+    // Soft Colors
+    "#FFC0CB", // Pink
+    "#FFA07A", // Light Salmon
+    "#98FB98", // Pale Green
+    "#ADD8E6", // Light Blue
+    "#DDA0DD", // Plum
+    "#F0E68C", // Khaki
+];
+
 function App() {
     const editorRef = useRef();
     const editorId = useRef(`richtext_${crypto.randomUUID()}`);
@@ -225,7 +263,25 @@ function App() {
                     >
                         <del>S</del>
                     </button>
-
+                </div>
+                <div>
+                    {COLOURS.map((colour, index) => {
+                        return (
+                            <button key={`colour_${index}`}
+                                style={{ width: "20px", backgroundColor: colour }}
+                                onClick={() => {
+                                    addHtmlElement({
+                                        htmlElement: "span",
+                                        style: { ["color"]: colour }
+                                    });
+                                }}
+                            >
+                                &nbsp;
+                            </button>
+                        );
+                    })}
+                </div>
+                <div>
                     <button
                         onClick={() => {
                             addHtmlElement({
@@ -266,7 +322,8 @@ function App() {
                     >
                         justify
                     </button>
-
+                </div>
+                <div>
                     <button
                         onClick={() => {
                             addHtmlElement({
